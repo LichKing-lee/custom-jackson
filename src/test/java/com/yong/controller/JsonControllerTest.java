@@ -8,6 +8,7 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.hamcrest.core.StringContains.containsString;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -36,5 +37,21 @@ public class JsonControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_UTF8))
                 .andExpect(content().string(containsString("1990-02-02")));
+    }
+
+    @Test
+    public void 역직렬화() throws Exception {
+        mockMvc.perform(post("/")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\"name\":\"LichKing\",\"age\":29}"))
+                .andExpect(content().string(containsString("{\"name\":\"LichKing\",\"age\":29,\"birthDay\":null")));
+    }
+
+    @Test
+    public void 역직렬화_생일() throws Exception {
+        mockMvc.perform(post("/")
+                .contentType(MediaType.APPLICATION_JSON_UTF8)
+                .content("{\"name\":\"LichKing\",\"age\":29, \"birthDay\":\"1990-02-02\"}"))
+                .andExpect(content().string(containsString("{\"name\":\"LichKing\",\"age\":29,\"birthDay\":\"1990-02-02\"")));
     }
 }

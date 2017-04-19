@@ -2,6 +2,8 @@ package com.yong.controller;
 
 import com.yong.model.Person;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
@@ -14,5 +16,10 @@ public class JsonController {
     @GetMapping("")
     public Person test(){
         return new Person("LichKing", 29, LocalDate.of(1990, 2, 2));
+    }
+
+    @PostMapping("")
+    public Person post(@RequestBody Person person){
+        return person;
     }
 }
